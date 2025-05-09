@@ -4,11 +4,15 @@ const { createLogger, fileName } = require('./class/logger');
 
 require('dotenv').config();
 
-const { TOKEN, CLIENT_ID } = process.env;
+const { TOKEN, CLIENTID } = process.env;
 
 const commands = [];
 
 for (const command of findCommands()) {
+    if (Object.keys(command.data).length === 0) {
+        console.warn(`File data.js from ${command.name} is empty or wrong`);
+        continue;
+    }
     commands.push(command.data.toJSON());
 }
 
@@ -16,9 +20,10 @@ const rest = new REST().setToken(TOKEN);
 
 (async () => {
     try {
+        console.log();
         console.log(`Started refreshing ${commands.length} application (/) commands.`);
 
-        const data = await rest.put(Routes.applicationCommands(CLIENT_ID), {
+        const data = await rest.put(Routes.applicationCommands(CLIENTID), {
             body: commands,
         });
 

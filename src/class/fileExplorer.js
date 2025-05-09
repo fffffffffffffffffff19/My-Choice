@@ -28,14 +28,18 @@ class FileExplorer {
             const items = [];
 
             for (const folder of this.itemsFolders(location)) {
-                const itemsPath = path.join(this.foldersPath(location), folder);
-                const itemsFile = fs.readdirSync(itemsPath).filter((item) => item.endsWith('.js'));
+                const folderPath = path.join(this.foldersPath(location), folder);
+                const dataPath = path.join(folderPath, 'data.js');
+                const executePath = path.join(folderPath, 'execute.js');
 
-                for (const item of itemsFile) {
-                    const itemPath = path.join(itemsPath, item);
-                    const importedItems = require(itemPath);
-
-                    items.push(importedItems);
+                if (fs.existsSync(dataPath) && fs.existsSync(executePath)) {
+                    items.push({
+                        name: folder,
+                        data: require(dataPath),
+                        execute: require(executePath),
+                    });
+                } else {
+                    console.warn(`Folder "${folder}" is missing "data.js" or "execute.js".`);
                 }
             }
             return items;
@@ -67,21 +71,6 @@ class FileExplorer {
                 const handlerPath = path.join(this.foldersPath(location), handler);
 
                 items.push(handlerPath);
-            }
-
-            return items;
-        };
-
-        this.findPlayerEvents = () => {
-            const location = '../events/player';
-            const items = [];
-
-            for (const event of this.itemsFolders(location)) {
-                const eventPath = path.join(this.foldersPath(location), event);
-
-                if (!eventPath.endsWith('.js')) continue;
-
-                items.push(eventPath);
             }
 
             return items;
