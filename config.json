@@ -1,4 +1,16 @@
 {
     "clientUsername": "My Choice",
-    "clientAvatar": "https://i.imgur.com/DFNP9lJ.png"
+    "clientAvatar": "https://i.imgur.com/DFNP9lJ.png",
+    "attributsCap": {
+        "dodgeChance": "85",
+        "blockChance": "85",
+        "comboChance": "75",
+        "accuracy": "75",
+        "focus": "75",
+        "armor": "35",
+        "counterChance": "60",
+        "reversalChance": "90",
+        "extraTurnChance": "60",
+        "bleedChance": "75"
+    }
 }
